@@ -1,0 +1,9 @@
+Hash functions and password cracking
+
+Cryptographic hash functions have been described as the workhorses of modern cryptography, having uses in message authentication, digital signatures and password verification.
+But how do they work and how safe really are they?
+
+In this talk I will introduce hash functions. We will discuss some of their use cases and also consider when they may fail us.
+Following this I will give a live demo of password cracking using the software hashcat and one of our GPU equipped machines, which is capable of making 4 billion password attacks per second.
+
+After this (hopefully) eye-opening demonstration, I will conclude by discussing how to set and manage passwords in a secure and safe manner.
