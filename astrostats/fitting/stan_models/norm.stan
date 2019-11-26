@@ -1,22 +1,26 @@
 data{
     int<lower=0> N;                // number of data points
-    int<lower=0> K;                // number of coefficients
-    real Y[N];                     // number of sunspots
+    real Y[N];                     // number of sunspots at each data point
 }
 parameters{
-    vector[K] varphi;                    // linear predictor coefficients
-    real<lower=0> sigma;              // noise parameter
+    real alpha;                    // additive constant
+    real varphi;                   // linear predictor coefficient
+    real<lower=0> sigma;           // noise parameter
 }
-model{
+transformed parameters{
     vector[N] mu;
 
-    mu[1] = Y[1];                     // set initial value
+    mu[1] = Y[1];                  // set initial value
 
-    for (t in 2:N) mu[t] = varphi[1] + varphi[2] * Y[t - 1];
-    // priors and likelihood
+    for (t in 2:N) mu[t] = alpha + varphi * Y[t - 1];
+}
+model{
+    // priors
     sigma ~ gamma(0.001, 0.001);
-    for (i in 1:K) varphi[i] ~ normal(0, 100);
+    alpha ~ normal(0, 100);
+    varphi ~ normal(0, 100);
 
+    // likelihood
     Y ~ normal(mu, sigma);
 }
 generated quantities{   
@@ -24,6 +28,6 @@ generated quantities{
 
     // posterior predictions
     for (n in 1:(N-1))
-        y_pred[n] = normal_rng(varphi[1] + varphi[2] * Y[n], sigma);
+        y_pred[n] = normal_rng(mu[n], sigma);
 }
 

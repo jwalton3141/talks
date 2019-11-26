@@ -39,7 +39,7 @@ def rename_rows(df):
     newrows = re.sub('\[(.*)\]', '_{\\1}', newrows, flags=re.MULTILINE)
     newrows = re.sub('$\\$', r'\$\\', newrows, flags=re.MULTILINE)
 
-    for letter in ['varphi', 'sigma', 'theta']:
+    for letter in ['alpha', 'varphi', 'sigma', 'theta']:
         newrows = re.sub(letter, '\\\\' + letter, newrows, flags=re.MULTILINE)
 
     newrows = newrows.split('\n')

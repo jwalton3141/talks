@@ -64,7 +64,7 @@ def kde_plot(chains, labels, save_path):
         x = np.linspace(chains[param].min(), chains[param].max(), num=200)
     
         # Plot prior beliefs
-        if param.startswith('varphi'):
+        if param == 'varphi' or param == 'alpha':
             ax[i].plot(x, norm.pdf(x, 0, 100), c='C1', label='prior beliefs' if i == 0 else "")
         else:
             ax[i].plot(x, gamma.pdf(x, 0.001, 1/0.001), c='C1',
