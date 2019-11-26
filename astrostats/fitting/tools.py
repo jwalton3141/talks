@@ -69,7 +69,6 @@ def load_data(proj_dir):
     data = {}
     data['Y'] = [int(round(item)) for item in data_frame['nspots']]
     data['N'] = len(data['Y'])
-    data['K'] = 2
 
     return data, data_frame
 
@@ -77,11 +76,11 @@ def get_params(model_name):
     """ Return the names of the parameters for the given model """
 
     if model_name == 'norm':
-        plot_labels = [r'$\varphi_1$', r'$\varphi_2$', r'$\sigma$']
-        param_names = ['varphi[1]', 'varphi[2]', 'sigma']
+        plot_labels = [r'$\alpha$', r'$\varphi$', r'$\sigma$']
+        param_names = ['alpha', 'varphi', 'sigma']
     elif model_name == 'neg_bin':
-        plot_labels = [r'$\varphi_1$', r'$\varphi_2$', r'$\theta$']
-        param_names = ['varphi[1]', 'varphi[2]', 'theta']
+        plot_labels = [r'$\alpha$', r'$\varphi$', r'$\theta$']
+        param_names = ['alpha', 'varphi', 'theta']
 
     return param_names, plot_labels
 
