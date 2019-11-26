@@ -8,6 +8,7 @@
 \usepackage{bm}
 \usepackage{booktabs}
 \usepackage{siunitx}
+\usepackage{tikz}
 \bibliographystyle{plainnat}
 \graphicspath{{fig/}}
 
@@ -16,45 +17,70 @@
 
 \author{Jack Walton}
 \title{Bayesian Statistics in Astrophysics}
-\date{October 23, 2019}
+\institute{Newcastle University}
+\date{November 26, 2019}
 
 \begin{document}
 
-\maketitle
+\begin{frame}
+  \tikz [remember picture,overlay]
+  \node at
+    ([yshift=2.5cm,xshift=5.42cm]current page.south) 
+    {\includegraphics[width=.25\textwidth,height=.25\textwidth]{qr.png}};
+  \titlepage
+\end{frame}
 
-\begin{frame}{Disclaimer}
+
+\begin{frame}{This talk's not \emph{really} about astrophysics\ldots}
   \begin{columns}
-    \begin{column}{0.5\textwidth}
-      I am \emph{not} talking about my own research because:
-      \begin{enumerate}
-        \item \emph{Most} of you saw me talk at the applied PGR conference at the end
-              of June
-        \item I have no new results since June (I suspended studies for 3 months
-              over summer)
-      \end{enumerate}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \begin{figure}
-        \includegraphics[width=\textwidth]{win.jpg}
-        \caption{No new research here\ldots}
-      \end{figure}
+    \begin{column}{0.6\textwidth}
+      The second part of this talk makes a case study using astrophysical data\\\vspace{0.5cm}
+      However, the methodolgy we'll explore can be used to model \emph{any} observation
+      which varies through time. 
+    \end{column}%
+    \begin{column}{0.4\textwidth}
+      \vspace{-0.75cm}
+      \includegraphics[width=0.9\textwidth, height=\textwidth]{space.jpg}
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Table of contents}
-  \tableofcontents
+\begin{frame}{A tale of two parts}
+  \begin{itemize}
+    \item Bayesian \&  frequentist statistics
+    \begin{itemize}
+      \item The two approaches and how they differ
+      \item An introduction to MCMC and Stan
+    \end{itemize}
+  \end{itemize}
+  \begin{itemize}
+    \item Sunspot occurrence
+    \begin{itemize}
+      \item What they are and why we should care
+      \item Autoregressive models
+      \item Model fitting and results
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \section{Bayesian \& frequentist statistics}
 
 \begin{frame}{Frequentist statistics}
-  \begin{itemize}
-    \item This approach to statistics will be familiar to most
-    \item Think $p$-values, hypothesis testing, confidence intervals etc.
-    \item However, it is not the only statistical framework (nor is it the
-          focus of this talk\ldots)
-  \end{itemize}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \begin{itemize}
+        \item This approach to statistics will be familiar to most
+        \item \emph{Think} $p$-values, hypothesis testing, confidence intervals etc.
+        \item However, it is not the only statistical framework (nor is it the
+               focus of this talk\ldots)
+      \end{itemize}
+    \end{column}%
+    \begin{column}{0.4\textwidth}
+      \centering
+      \vspace{-0.75cm}
+      \includegraphics[width=0.75\textwidth]{tosser.jpg}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Bayesian vs. frequentist statistics}
@@ -75,9 +101,9 @@
 
 \begin{frame}{\emph{Why} Bayesian?}
   \begin{itemize}
-    \item Philosophically aligns with how we practice science: \emph{updating}
-          our \emph{beliefs} in light of \emph{new evidence}
-    \item Allows the inclusion of expert information through a \emph{prior
+    \item Philosophically aligns with how we practice science: \alert{updating}
+          our \alert{beliefs} in light of \alert{new evidence}
+    \item Allows the inclusion of expert information through a \alert{prior
             distribution}
     \item For events that only occur once, how appropriate is a methodology
           which relies on repeatability?
@@ -109,7 +135,7 @@
 \end{frame}
 
 % naughty
-\setcounter{figure}{1}
+\setcounter{figure}{0}
 
 \begin{frame}{Bayes' Theorem}
   \begin{columns}
@@ -133,6 +159,8 @@
 \end{frame}
 
 \begin{frame}{MCMC}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
   \begin{itemize}
     \item MCMC --- Markov Chain Monte Carlo
     \item Class of algorithms used to sample from probability densities
@@ -140,6 +168,13 @@
           posterior distribution
     \item Avoids the computation of $\pi(\bm{x})$
   \end{itemize}
+  \end{column}%
+  \begin{column}{0.4\textwidth}
+    \centering
+    \vspace{-0.6cm}
+    \includegraphics[width=0.8\textwidth]{mc.jpg}
+  \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Stan}
@@ -164,7 +199,7 @@
 
 \section{Sunspot occurrence: a case study}
 
-\begin{frame}{What \emph{are} sunspots?}
+\begin{frame}{What \emph{are} sunspots and who cares anyway?}
   \begin{columns}
     \begin{column}{0.6\textwidth}
       \begin{itemize}
@@ -185,10 +220,10 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Data}
+\begin{frame}{The data}
   \begin{columns}
     \begin{column}{0.5\textwidth}
-      We shall use the mean annual data for the International Sunspot number,
+      We shall use the annual data for the International Sunspot number,
       under the responsibility of the Royal Observatory in Belgium since 1980.
     \end{column}
     \begin{column}{0.5\textwidth}
@@ -201,14 +236,39 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}{The data}
+  \begin{figure}
+    \centering
+    \includegraphics{data.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Autoregressive models}
+  Autoregressive models \alert{predict future} behaviour \alert{given past} behaviour
+
+  An $AR(p)$ model:
+  \begin{align*}
+      & X_{t} \sim Normal(\mu_{t}, \sigma^2) \\
+      &  \mu_{t} = \alpha + \varphi_1 X_{t-1} + \varphi_2 X_{t-2} + \varphi_3 X_{t-3} + \ldots +
+      \varphi_{t-p} X_{t-p}
+  \end{align*}
+\end{frame}
+
+\begin{frame}{In the flesh: $AR(1)$ processes}
+  \vspace{-0.85cm}
+  \begin{figure}
+    \includegraphics{AR.pdf}
+  \end{figure}
+\end{frame}
+
 \begin{frame}{Normal $AR(1)$ model}
   \begin{align*}
-    S_{t} \sim Normal(\mu_t, \sigma^2)    & \\
-    \mu_t = \varphi_1 + \varphi_2 S_{t-1} &
+      S_t \sim Normal(\mu_t, \sigma^2) & \\
+      \mu_t = \alpha + \varphi S_{t-1} &
   \end{align*}
 
-  Given the observed data can we infer the parameters $\varphi_1$,
-  $\varphi_2$ and $\sigma$?
+  Given the observed data can we infer the parameters $\alpha$,
+  $\varphi$ and $\sigma$?
 \end{frame}
 
 \begin{frame}{Results: summary}
@@ -236,27 +296,12 @@
 
 \begin{frame}{Negative Binomial $AR(1)$ model}
   \begin{align*}
-    S_{t} \sim NB(p_t, \theta)                 & \\
-    p_t = \theta / (\theta + \mu_t)            & \\
-    \log(\mu_t) = \varphi_1 + \varphi_2S_{t-1} &
+      S_{t} \sim NB(p_{t}, \theta)            & \\
+      p_{t} = \theta / (\theta + \mu_{t})     & \\
+      \log(\mu_{t+1}) = \alpha + \varphi S_{t-1} &
   \end{align*}
-  Given the observed data can we infer the parameters $\varphi_1$,
-  $\varphi_2$ and $\theta$?
-\end{frame}
-
-\begin{frame}{Results: summary}
-  \begin{table}
-    \centering
-    \input{fitting/out/neg_bin.tab}
-    \caption{Summary of posterior samples after running Stan for $10\,000$ iterations (30 seconds).}
-  \end{table}
-\end{frame}
-
-\begin{frame}{Results: posterior densities}
-  \begin{figure}
-    \centering
-    \includegraphics{fitting/out/norm_kde.pdf}
-  \end{figure}
+  Given the observed data can we infer the parameters $\alpha$,
+  $\varphi$ and $\theta$?
 \end{frame}
 
 \begin{frame}{Results: posterior predictives}
@@ -270,10 +315,22 @@
 \begin{frame}{Conclusion}
   \begin{itemize}
     \item Modern computing power is making Bayesian methodologies more accessible
-    \item Many `black-box' MCMC implementations make inference pain-free
-    \item The inclusion of prior information can be useful for astronomical
+    \item Many `black-box' MCMC implementations make inference (relatively) pain-free
+    \item The inclusion of prior information can be useful for 
           events which have limited observational data
   \end{itemize}
+\end{frame}
+
+\begin{frame}{\emph{People who liked this also liked\ldots}}
+  \centering
+  \renewcommand{\arraystretch}{2}
+  \setlength\tabcolsep{0.75cm}
+  \begin{tabular}{cc}
+    Suitable bed time reading:&
+    \emph{Not} suitable bed time reading:\\
+    \includegraphics[width=0.275\textwidth]{thinking.jpg}&
+    \includegraphics[width=0.275\textwidth]{bda3.jpg} \\
+  \end{tabular}
 \end{frame}
 
 \begin{frame}{References}
